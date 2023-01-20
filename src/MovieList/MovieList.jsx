@@ -2,6 +2,10 @@
 import { Row, Col, Card, Image, Button, Layout } from 'antd';
 import './MovieList.css';
 
+//const test = new ApiService()
+//test.getOneData(550).then(data => console.log(data))
+
+//test.getSearchMovie("return").then(data => console.log(data))
 const MovieList = () => {
   return (
     <div className="container">
