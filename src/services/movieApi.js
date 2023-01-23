@@ -1,3 +1,5 @@
+import imageShow from '../images/shrek.jpg';
+
 export default class ApiService {
   _apiBase = 'https://api.themoviedb.org/3';
   API_KEY = 'ec32ee203bb1918ee735c44c14ca245e';
@@ -5,15 +7,11 @@ export default class ApiService {
   size = '/w500/';
 
   async getAllData(url) {
-    try {
-      const res = await fetch(`${this._apiBase}${url}`);
-      if (!res.ok) {
-        throw new Error(`Sorry could not get data from ${this._apiBase}, received ${res.status}`);
-      }
-      return await res.json();
-    } catch (err) {
-      console.log(err.message);
+    const res = await fetch(`${this._apiBase}${url}`);
+    if (!res.ok) {
+      throw new Error(`Sorry could not get data from ${this._apiBase}, received ${res.status}`);
     }
+    return await res.json();
   }
 
   async getOneData(id) {
@@ -21,8 +19,12 @@ export default class ApiService {
   }
 
   async getSearchMovie(title) {
+    if (title === '') {
+      title = 'return';
+      return this.getAllData(`/search/movie?api_key=${this.API_KEY}&query=${title}`);
+    }
     return this.getAllData(`/search/movie?api_key=${this.API_KEY}&query=${title}`);
   }
 
-  getImage = (imgPath) => `${this._imgBase}${this.size}${imgPath}`;
+  getImage = (imgPath) => (imgPath ? `${this._imgBase}${this.size}${imgPath}` : `${imageShow}`);
 }

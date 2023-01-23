@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 
 import MovieCard from '../MovieCard/MovieCard';
@@ -7,9 +7,24 @@ import './MovieList.css';
 import imageShow from '../images/shrek.jpg';
 import ApiService from '../services/movieApi';
 
-const MovieList = (props) => {
-  const { movies } = props;
+export const MovieList = (props) => {
+  const [moviesData, setMoviesData] = useState([]);
+  const { movies, query } = props;
   const apiData = new ApiService();
+  // console.log(query,"query")
+  //
+  //     const getData=()=>{
+  //       let data= apiData.getSearchMovie(query)
+  //       data.then(searchData=> setMoviesData(searchData.results))
+  //           .catch((err)=> console.log(err.message))
+  //     }
+  //     useEffect(()=>{
+  //       getData()
+  //     },[])
+  //
+  //
+  //
+  // console.log(moviesData,"state")
 
   return (
     <div className="container">
@@ -32,18 +47,16 @@ const MovieList = (props) => {
 
 MovieList.propTypes = {
   movies: propTypes.arrayOf(propTypes.object),
+  query: propTypes.string,
 };
 
 MovieList.defaultProps = {
   movies: [
     {
-      title: 'Hi',
+      title: 'OOPS!',
       overview: "Server doesn't work",
-      img: imageShow,
       release_date: '10-10-2010',
-      id: Math.floor(Math.random() * 25 + 7),
     },
   ],
+  query: 'return',
 };
-
-export default MovieList;

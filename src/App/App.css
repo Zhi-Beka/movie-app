@@ -1,6 +1,27 @@
-.app {
-  width: 1120px;
-  height: 100vh;
-  margin: 0 auto;
-  padding: 20px;
+body{
+  background: #E5E5E5;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
 }
+
+
+.app {
+  width: 1010px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 30px;
+  background: white;
+  font-family: "Agency FB", serif;
+}
+
+.spin{
+  margin: 20px auto;
+  padding: 30px 50px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  width: 100%;
+}
+
