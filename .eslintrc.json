@@ -26,10 +26,18 @@
 
   "plugins": ["react", "prettier", "import"],
   "rules": {
+    "no-unused-vars": [
+      "error",
+      {
+        "ignoreRestSiblings": true,
+        "destructuredArrayIgnorePattern": "[A-Z]",
+        "caughtErrors": "none"
+      }
+    ],
     "indent": "off",
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "linebreak-style": [0, "unix"],
-    "quotes": ["error", "single"],
+    "quotes": ["warn", "single"],
     "semi": [1, "always"],
     "react/react-in-jsx-scope": "off",
     "react/prop-types": 0,

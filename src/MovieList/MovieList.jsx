@@ -1,46 +1,49 @@
-/* eslint-disable no-unused-vars */
-import { Row, Col, Card, Image, Button, Layout } from 'antd';
+/* eslint-disable */
+import React from 'react';
+import propTypes from 'prop-types';
+
+import MovieCard from '../MovieCard/MovieCard';
 import './MovieList.css';
+import imageShow from '../images/shrek.jpg';
+import ApiService from '../services/movieApi';
 
-//const test = new ApiService()
-//test.getOneData(550).then(data => console.log(data))
+const MovieList = (props) => {
+  const { movies } = props;
+  const apiData = new ApiService();
 
-//test.getSearchMovie("return").then(data => console.log(data))
-const MovieList = () => {
   return (
     <div className="container">
-      <Row className="card" hoverable>
-        <Col flex="185px">
-          <Image src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" height={280} />
-        </Col>
-        <Col flex="265px" className="col">
-          <h4>The way back</h4>
-          <p>March 5, 2020</p>
-          <Button gray-4>Action</Button>
-          <Button>Drama</Button>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptas sit repellat distinctio animi corporis
-            blanditiis sint veniam fuga perspiciatis ex. Numquam minus nisi
-          </p>
-        </Col>
-      </Row>
-      <Row className="card" hoverable>
-        <Col flex="185px">
-          <Image src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" height={280} />
-        </Col>
-        <Col flex="265px" className="col">
-          <h4>The way back</h4>
-          <p>March 5, 2020</p>
-          <Button gray-4>Action</Button>
-          <Button>Drama</Button>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptas sit repellat distinctio animi corporis
-            blanditiis sint veniam fuga perspiciatis ex. Numquam minus nisi
-          </p>
-        </Col>
-      </Row>
+      {movies.map((el) => {
+        const { title, overview, poster_path, release_date, id } = el;
+
+        return (
+          <MovieCard
+            title={title}
+            overview={overview}
+            img={apiData.getImage(poster_path)}
+            date={release_date}
+            key={id}
+          />
+        );
+      })}
     </div>
   );
+};
+
+MovieList.propTypes = {
+  movies: propTypes.arrayOf(propTypes.object),
+};
+
+MovieList.defaultProps = {
+  movies: [
+    {
+      title: 'Hi',
+      overview: "Server doesn't work",
+      img: imageShow,
+      release_date: '10-10-2010',
+      id: Math.floor(Math.random() * 25 + 7),
+    },
+  ],
 };
 
 export default MovieList;

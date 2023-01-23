@@ -1,0 +1,11 @@
+.card {
+  width: 455px;
+  height: 280px;
+  background-color: white;
+
+  box-shadow: rgba(41, 41, 42, 0.2) 0px 7px 29px 0px;
+}
+
+.col {
+  padding: 10px 15px;
+}
