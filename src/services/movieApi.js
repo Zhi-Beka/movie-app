@@ -1,4 +1,4 @@
-import imageShow from '../images/shrek.jpg';
+import imageShow from '../images/not-found.jpg';
 
 export default class ApiService {
   _apiBase = 'https://api.themoviedb.org/3';
@@ -14,17 +14,18 @@ export default class ApiService {
     return await res.json();
   }
 
-  async getOneData(id) {
-    return this.getAllData(`/movie/${id}?api_key=${this.API_KEY}`);
-  }
-
   async getSearchMovie(title) {
-    if (title === '') {
-      title = 'return';
-      return this.getAllData(`/search/movie?api_key=${this.API_KEY}&query=${title}`);
-    }
     return this.getAllData(`/search/movie?api_key=${this.API_KEY}&query=${title}`);
   }
 
   getImage = (imgPath) => (imgPath ? `${this._imgBase}${this.size}${imgPath}` : `${imageShow}`);
+
+  async getPaginationMovie(title, page) {
+    if (!title) {
+      title = 'return';
+
+      return this.getAllData(`/search/movie?api_key=${this.API_KEY}&query=${title}&page=${page}`);
+    }
+    return this.getAllData(`/search/movie?api_key=${this.API_KEY}&query=${title}&page=${page}`);
+  }
 }

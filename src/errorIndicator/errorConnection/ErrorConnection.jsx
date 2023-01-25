@@ -26,7 +26,7 @@ export const ErrorConnection = () => {
   }, [isOnline]);
 
   return (
-    <div className="container">
+    <div className="error-offline">
       <h3>Welcome to KindaCode.com</h3>
       <p>Turn on/off your Wi-Fi to see what happens</p>
       {isOnline ? <h1 className="online">You Are Online</h1> : <h1 className="offline">You Are Offline</h1>}

@@ -1,11 +1,9 @@
-body{
-  background: #E5E5E5;
+body {
+  background: #e5e5e5;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-
 }
-
 
 .app {
   width: 1010px;
@@ -13,10 +11,9 @@ body{
   margin: 0 auto;
   padding: 30px;
   background: white;
-  font-family: "Agency FB", serif;
 }
 
-.spin{
+.spin {
   margin: 20px auto;
   padding: 30px 50px;
   text-align: center;
@@ -24,4 +21,3 @@ body{
   border-radius: 4px;
   width: 100%;
 }
-

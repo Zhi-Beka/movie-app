@@ -1,31 +1,34 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
 import propTypes from 'prop-types';
 
 import MovieCard from '../MovieCard/MovieCard';
 import './MovieList.css';
-import imageShow from '../images/shrek.jpg';
 import ApiService from '../services/movieApi';
 
-export const MovieList = (props) => {
-  const [moviesData, setMoviesData] = useState([]);
-  const { movies, query } = props;
-  const apiData = new ApiService();
-  // console.log(query,"query")
-  //
-  //     const getData=()=>{
-  //       let data= apiData.getSearchMovie(query)
-  //       data.then(searchData=> setMoviesData(searchData.results))
-  //           .catch((err)=> console.log(err.message))
-  //     }
-  //     useEffect(()=>{
-  //       getData()
-  //     },[])
-  //
-  //
-  //
-  // console.log(moviesData,"state")
+export const MovieList = ({ movies, page }) => {
+  //const [current, setCurrent] = useState(3);
+  //const [findMovie, setFindMovie] = useState([])
 
+  const apiData = new ApiService();
+
+  // async function  getPagination(title, page){
+  //  await apiData.getPaginationMovie(title, page)
+  //      .then(data=> setFindMovie(data.results))
+  //      .catch(err=>console.log(err.message))
+  // }
+
+  // useEffect(()=>{
+  //   getPagination("avatar", current)
+  // },[current])
+
+  // console.log(findMovie)
+
+  // const onChange = (page) => {
+  //   console.log(page);
+  //   setCurrent(page);
+  // };
   return (
     <div className="container">
       {movies.map((el) => {

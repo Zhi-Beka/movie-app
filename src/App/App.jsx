@@ -1,6 +1,6 @@
 import React from 'react';
 import { debounce } from 'lodash';
-import { Spin } from 'antd';
+import { Pagination, Spin } from 'antd';
 
 import MovieList from '../MovieList';
 import './App.css';
@@ -13,9 +13,12 @@ export default class App extends React.Component {
     super();
     this.state = {
       movie: [],
-      value: '',
+      paginateData: [],
+      value: 'return',
+      page: 1,
       loading: true,
       error: false,
+      noResults: false,
     };
   }
   apiData = new ApiService();
@@ -31,9 +34,9 @@ export default class App extends React.Component {
     console.log(err.message);
   };
 
-  getData = async () => {
+  getData = async (query, page = 1) => {
     await this.apiData
-      .getSearchMovie('return')
+      .getPaginationMovie(query, page)
       .then((data) => {
         return this.setState({
           movie: data.results,
@@ -44,21 +47,46 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
-    this.getData();
+    const { value, page } = this.state;
+    this.getData(value, page);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { value, page } = this.state;
+    if (value !== prevState.value || page !== prevState.page) {
+      this.getData(value, page);
+    }
+  }
+
+  onChangePage = (current) => {
+    this.setState({
+      page: current,
+    });
+    window.scroll(0, 0);
+  };
+
   render() {
-    const { loading, value, movie, error } = this.state;
+    const { loading, page, movie, error } = this.state;
     const spinner = loading ? <Spin size="large" className="spin" /> : null;
     const errorMessage = error ? <ErrorIndicator /> : null;
-    const showContent = !(loading || error) ? <MovieList movies={movie} query={value} /> : null;
+    const hasData = !(loading || error);
+    const showContent = hasData ? <MovieList movies={movie} page={page} /> : null;
 
     return (
       <div className="app">
         <Search getValue={this.debouncedHandleChange} />
         {spinner}
         {errorMessage}
-        {showContent}
+        {movie.length ? showContent : <ErrorIndicator noResults={true} />}
+        {movie.length ? (
+          <Pagination
+            style={{ marginTop: '20px', textAlign: 'center' }}
+            current={page}
+            onChange={this.onChangePage}
+            pageSize={4}
+            total={movie.length}
+          />
+        ) : null}
       </div>
     );
   }

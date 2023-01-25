@@ -1,12 +1,12 @@
-.container {
-    width: 80%;
-    margin: 50px auto;
+.error-offline {
+  width: 80%;
+  margin: 50px auto;
 }
 
 .online {
-    color: blue;
+  color: blue;
 }
 
 .offline {
-    color: red;
+  color: red;
 }

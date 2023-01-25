@@ -1,8 +1,7 @@
 .container {
   display: grid;
-  /*justify-content: center;*/
-
+  justify-content: center;
+  /*grid-template-columns: 455px 455px;*/
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-
 }

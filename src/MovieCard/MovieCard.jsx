@@ -1,4 +1,4 @@
-import { Button, Col, Image, Row } from 'antd';
+import { Button, Col, Divider, Image, Row, Typography } from 'antd';
 import propTypes from 'prop-types';
 
 /* eslint-disable */
@@ -7,7 +7,7 @@ import imageShow from '../images/shrek.jpg';
 
 const MovieCard = (props) => {
   const { title, overview, img, date, id } = props;
-
+  const { Title, Text } = Typography;
   const sliceText = (text) => {
     const len = 120;
     if (text.length > len) {
@@ -16,16 +16,19 @@ const MovieCard = (props) => {
   };
 
   return (
-    <Row className="card">
-      <Col flex="185px">
+    <Row className="card" align>
+      <Col span={10}>
         <Image src={img} height={280} />
       </Col>
-      <Col flex="265px" className="col">
-        <h4>{title}</h4>
-        <p>{date}</p>
-        <Button>Action</Button>
-        <Button>Drama</Button>
-        <p>{sliceText(overview)}</p>
+      <Col span={12} className="col-text">
+        <Title level={5}>{title}</Title>
+        <Text level={7}>{date}</Text>
+        <div>
+          <Button>Action</Button>
+          <Divider type="vertical" />
+          <Button>Drama</Button>
+        </div>
+        <Text>{sliceText(overview)}</Text>
       </Col>
     </Row>
   );

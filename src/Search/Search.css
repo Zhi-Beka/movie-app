@@ -1,13 +1,4 @@
-.search-box{
-    margin-bottom: 20px;
-    width: 100%;
-}
-h3{
-    text-align: center;
-    /*color: blue;*/
-    /*border-bottom: 1px solid blue;*/
-}
-a{
-    margin-right: 15px;
-    color: gray;
+.search-box {
+  margin-bottom: 20px;
+  width: 100%;
 }
