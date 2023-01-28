@@ -9,6 +9,8 @@ import Search from '../Search';
 import { ErrorIndicator } from '../errorIndicator';
 
 export default class App extends React.Component {
+  apiData = new ApiService();
+
   constructor() {
     super();
     this.state = {
@@ -18,10 +20,8 @@ export default class App extends React.Component {
       page: 1,
       loading: true,
       error: false,
-      noResults: false,
     };
   }
-  apiData = new ApiService();
 
   getValueSearch = (e) => {
     this.setState({ value: e.target.value });
@@ -34,9 +34,14 @@ export default class App extends React.Component {
     console.log(err.message);
   };
 
+  onChangePage = (current) => {
+    this.setState({ page: current });
+    window.scroll(0, 0);
+  };
+
   getData = async (query, page = 1) => {
     await this.apiData
-      .getPaginationMovie(query, page)
+      .getMovieBySearch(query, page)
       .then((data) => {
         return this.setState({
           movie: data.results,
@@ -58,13 +63,6 @@ export default class App extends React.Component {
     }
   }
 
-  onChangePage = (current) => {
-    this.setState({
-      page: current,
-    });
-    window.scroll(0, 0);
-  };
-
   render() {
     const { loading, page, movie, error } = this.state;
     const spinner = loading ? <Spin size="large" className="spin" /> : null;
@@ -78,7 +76,7 @@ export default class App extends React.Component {
         {spinner}
         {errorMessage}
         {movie.length ? showContent : <ErrorIndicator noResults={true} />}
-        {movie.length ? (
+        {movie.length > 0 && (
           <Pagination
             style={{ marginTop: '20px', textAlign: 'center' }}
             current={page}
@@ -86,7 +84,7 @@ export default class App extends React.Component {
             pageSize={4}
             total={movie.length}
           />
-        ) : null}
+        )}
       </div>
     );
   }

@@ -28,23 +28,21 @@ const MovieCard = (props) => {
           <Divider type="vertical" />
           <Button>Drama</Button>
         </div>
-        <Text>{sliceText(overview)}</Text>
+        <Text>{sliceText(overview) || 'No more information about this movie, sorry'}</Text>
       </Col>
     </Row>
   );
 };
 MovieCard.defaultProps = {
   title: 'Oops!',
-  overview: 'Somtehing went wrong...',
+  overview: 'No text here..',
   date: '15-10-2010',
   img: imageShow,
-  id: Math.floor(Math.random() * 25 + 7),
 };
 MovieCard.propTypes = {
   title: propTypes.string,
   img: propTypes.string,
   overview: propTypes.string,
   date: propTypes.string,
-  id: propTypes.number,
 };
 export default MovieCard;

@@ -4,41 +4,57 @@ import propTypes from 'prop-types';
 import MovieCard from '../MovieCard/MovieCard';
 import './MovieList.css';
 import ApiService from '../services/movieApi';
+import { ErrorIndicator } from '../errorIndicator';
+import React from 'react';
 
-export const MovieList = ({ movies }) => {
-  const apiData = new ApiService();
+export class MovieList extends React.Component {
+  static propTypes = {
+    movies: propTypes.arrayOf(propTypes.object),
+  };
 
-  return (
-    <div className="container">
-      {movies.map((el) => {
-        const { title, overview, poster_path, release_date, id } = el;
+  static defaultProps = {
+    movies: [
+      {
+        title: 'OOPS!',
+        overview: 'No text here',
+        release_date: '10-10-2010',
+      },
+    ],
+  };
+  apiData = new ApiService();
 
-        return (
-          <MovieCard
-            title={title}
-            overview={overview}
-            img={apiData.getImage(poster_path)}
-            date={release_date}
-            key={id}
-          />
-        );
-      })}
-    </div>
-  );
-};
+  constructor() {
+    super();
+    this.state = {
+      hasError: false,
+    };
+  }
+  componentDidCatch() {
+    this.setState({ hasError: true });
+  }
 
-MovieList.propTypes = {
-  movies: propTypes.arrayOf(propTypes.object),
-  query: propTypes.string,
-};
+  render() {
+    const { movies } = this.props;
 
-MovieList.defaultProps = {
-  movies: [
-    {
-      title: 'OOPS!',
-      overview: "Server doesn't work",
-      release_date: '10-10-2010',
-    },
-  ],
-  query: 'return',
-};
+    if (this.state.hasError) {
+      return <ErrorIndicator />;
+    }
+    return (
+      <div className="container">
+        {movies.map((el) => {
+          const { title, overview, poster_path, release_date, id } = el;
+
+          return (
+            <MovieCard
+              title={title}
+              overview={overview}
+              img={this.apiData.getImage(poster_path)}
+              date={release_date}
+              key={id}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+}
