@@ -42,7 +42,7 @@ export class MovieList extends React.Component {
     return (
       <div className="container">
         {movies.map((el) => {
-          const { title, overview, poster_path, release_date, id } = el;
+          const { title, overview, poster_path, release_date, id, vote_average } = el;
 
           return (
             <MovieCard
@@ -51,6 +51,7 @@ export class MovieList extends React.Component {
               img={this.apiData.getImage(poster_path)}
               date={release_date}
               key={id}
+              rating={vote_average}
             />
           );
         })}

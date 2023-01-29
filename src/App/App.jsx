@@ -69,7 +69,7 @@ export default class App extends React.Component {
     const errorMessage = error ? <ErrorIndicator /> : null;
     const hasData = !(loading || error);
     const showContent = hasData ? <MovieList movies={movie} page={page} /> : null;
-
+    console.log(movie);
     return (
       <div className="app">
         <Search getValue={this.debouncedHandleChange} />

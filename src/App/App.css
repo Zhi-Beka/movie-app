@@ -21,3 +21,10 @@ body {
   border-radius: 4px;
   width: 100%;
 }
+
+@media screen and (max-width: 420px) {
+  .app{
+   width: 100%;
+  }
+
+}

@@ -1,12 +1,17 @@
-import { Button, Col, Divider, Image, Row, Typography } from 'antd';
+import { Button, Col, Divider, Image, Rate, Row, Typography } from 'antd';
 import propTypes from 'prop-types';
+import classNames from 'classnames';
+import { useState } from 'react';
 
 /* eslint-disable */
 import './MovieCard.css';
 import imageShow from '../images/shrek.jpg';
 
 const MovieCard = (props) => {
-  const { title, overview, img, date, id } = props;
+  const [value, setValue] = useState(0);
+  const { title, overview, img, date, rating } = props;
+  const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
+
   const { Title, Text } = Typography;
   const sliceText = (text) => {
     const len = 120;
@@ -14,6 +19,14 @@ const MovieCard = (props) => {
       return text.slice(0, len) + ' ...';
     }
   };
+
+  const starColor = classNames({
+    rate: true,
+    bad: value < 3,
+    notBad: value > 3 && value < 5,
+    good: value > 5 && value < 7,
+    excellent: value > 7,
+  });
 
   return (
     <Row className="card" align>
@@ -23,12 +36,14 @@ const MovieCard = (props) => {
       <Col span={12} className="col-text">
         <Title level={5}>{title}</Title>
         <Text level={7}>{date}</Text>
+        <p className="rating">{rating}</p>
         <div>
           <Button>Action</Button>
           <Divider type="vertical" />
           <Button>Drama</Button>
         </div>
         <Text>{sliceText(overview) || 'No more information about this movie, sorry'}</Text>
+        <Rate count={10} className={starColor} onChange={setValue} value={value} />
       </Col>
     </Row>
   );

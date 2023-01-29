@@ -9,4 +9,46 @@
   flex-direction: column;
   gap: 5px;
   margin-left: 10px;
+  position: relative;
 }
+
+.rate{
+  font-size: 15px;
+}
+
+.bad{
+  color: #E90000;
+}
+
+.notBad{
+  color:#E97E00;
+}
+
+.good{
+  color:#E9D100;
+}
+
+.excellent{
+  color:#66E900;
+}
+
+.rating{
+  position: absolute;
+  top: -10px;
+  right: -26px;
+  padding: 5px;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #E9D100;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/*@media screen and (max-width: 420px) {*/
+/*.img-card{*/
+/*  height: 50px;*/
+/*}*/
+
+/*}*/
