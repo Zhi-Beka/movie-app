@@ -9,10 +9,9 @@ import imageShow from '../images/shrek.jpg';
 
 const MovieCard = (props) => {
   const [value, setValue] = useState(0);
-  const { title, overview, img, date, rating } = props;
-  const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
-
+  const { title, overview, img, date, vote } = props;
   const { Title, Text } = Typography;
+
   const sliceText = (text) => {
     const len = 120;
     if (text.length > len) {
@@ -23,20 +22,28 @@ const MovieCard = (props) => {
   const starColor = classNames({
     rate: true,
     bad: value < 3,
-    notBad: value > 3 && value < 5,
+    normal: value > 3 && value < 5,
     good: value > 5 && value < 7,
-    excellent: value > 7,
+    wonderful: value > 7,
+  });
+
+  const ratingColor = classNames({
+    rating: true,
+    bad: vote < 3,
+    normal: vote >= 3 && vote < 5,
+    good: vote >= 5 && vote < 7,
+    wonderful: vote >= 7,
   });
 
   return (
     <Row className="card" align>
-      <Col span={10}>
+      <Col lg={10} className="col-img">
         <Image src={img} height={280} />
       </Col>
       <Col span={12} className="col-text">
         <Title level={5}>{title}</Title>
         <Text level={7}>{date}</Text>
-        <p className="rating">{rating}</p>
+        <p className={ratingColor}>{vote}</p>
         <div>
           <Button>Action</Button>
           <Divider type="vertical" />

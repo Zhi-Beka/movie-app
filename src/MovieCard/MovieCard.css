@@ -12,27 +12,31 @@
   position: relative;
 }
 
-.rate{
+
+
+
+
+.rate {
   font-size: 15px;
 }
 
-.bad{
-  color: #E90000;
+.bad {
+  color: #e90000;
 }
 
-.notBad{
-  color:#E97E00;
+.normal {
+  color: #e97e00;
 }
 
-.good{
-  color:#E9D100;
+.good {
+  color: #e9d100;
 }
 
-.excellent{
-  color:#66E900;
+.wonderful {
+  color: #66e900;
 }
 
-.rating{
+.rating {
   position: absolute;
   top: -10px;
   right: -26px;
@@ -40,15 +44,14 @@
   text-align: center;
   width: 20px;
   height: 20px;
-  border: 2px solid #E9D100;
+  border: 2px solid;
   border-radius: 50%;
   font-size: 14px;
   font-weight: 600;
+  /*color:#e9d100;*/
 }
 
 /*@media screen and (max-width: 420px) {*/
-/*.img-card{*/
-/*  height: 50px;*/
-/*}*/
+
 
 /*}*/

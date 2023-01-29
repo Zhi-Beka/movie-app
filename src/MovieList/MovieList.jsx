@@ -51,7 +51,7 @@ export class MovieList extends React.Component {
               img={this.apiData.getImage(poster_path)}
               date={release_date}
               key={id}
-              rating={vote_average}
+              vote={vote_average}
             />
           );
         })}
