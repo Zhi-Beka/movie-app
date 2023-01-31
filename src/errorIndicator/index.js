@@ -1,4 +1,3 @@
-import { ErrorIndicator } from './errorIndicator/ErrorIndicator';
-import { ErrorConnection } from './errorConnection/ErrorConnection';
+import { ErrorIndicator } from './ErrorIndicator';
 
-export { ErrorIndicator, ErrorConnection };
+export default ErrorIndicator;

@@ -4,7 +4,7 @@ import propTypes from 'prop-types';
 import MovieCard from '../MovieCard/MovieCard';
 import './MovieList.css';
 import ApiService from '../services/movieApi';
-import { ErrorIndicator } from '../errorIndicator';
+import ErrorIndicator from '../errorIndicator';
 import React from 'react';
 
 export class MovieList extends React.Component {

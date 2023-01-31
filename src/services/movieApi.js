@@ -5,7 +5,20 @@ export default class ApiService {
   API_KEY = 'ec32ee203bb1918ee735c44c14ca245e';
   _imgBase = 'https://image.tmdb.org/t/p';
   size = '/w500/';
+  urlSession = `https://api.themoviedb.org/3/authentication/guest_session/new?api_key=${this.API_KEY}`;
   getImage = (imgPath) => (imgPath ? `${this._imgBase}${this.size}${imgPath}` : `${imageShow}`);
+
+  async createGuestSession() {
+    try {
+      const res = await fetch(this.urlSession);
+      if (!res.ok) {
+        throw new Error();
+      }
+      return await res.json();
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   async getAllData(url) {
     try {

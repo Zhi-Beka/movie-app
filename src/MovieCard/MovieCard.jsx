@@ -1,16 +1,34 @@
 import { Button, Col, Divider, Image, Rate, Row, Typography } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import propTypes from 'prop-types';
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 /* eslint-disable */
 import './MovieCard.css';
-import imageShow from '../images/shrek.jpg';
+import imageShow from '../images/not-found.jpg';
+
+import { Spin } from 'antd/lib';
+import { GenresContext } from '../contextAPI/GenresContext';
 
 const MovieCard = (props) => {
-  const [value, setValue] = useState(0);
+  const [stars, setStars] = useState(0);
   const { title, overview, img, date, vote } = props;
   const { Title, Text } = Typography;
+
+  const { addMovieToRatedList } = useContext(GenresContext);
+
+  // let storedMovie = ratedList.find((o) => o.id ===props.id);
+  // let disableStars = !!storedMovie
+
+  const antIcon = (
+    <LoadingOutlined
+      style={{
+        fontSize: 48,
+      }}
+      spin
+    />
+  );
 
   const sliceText = (text) => {
     const len = 120;
@@ -21,10 +39,10 @@ const MovieCard = (props) => {
 
   const starColor = classNames({
     rate: true,
-    bad: value < 3,
-    normal: value > 3 && value < 5,
-    good: value > 5 && value < 7,
-    wonderful: value > 7,
+    bad: stars <= 3,
+    normal: stars > 3 && stars < 5,
+    good: stars > 5 && stars < 7,
+    wonderful: stars > 7,
   });
 
   const ratingColor = classNames({
@@ -38,19 +56,35 @@ const MovieCard = (props) => {
   return (
     <Row className="card" align>
       <Col lg={10} className="col-img">
-        <Image src={img} height={280} />
+        <Image
+          src={img}
+          height={280}
+          fallback={imageShow}
+          placeholder={<Spin indicator={antIcon} className="spin" />}
+        />
       </Col>
       <Col span={12} className="col-text">
         <Title level={5}>{title}</Title>
         <Text level={7}>{date}</Text>
-        <p className={ratingColor}>{vote}</p>
+        <div className={ratingColor}>
+          <span> {vote}</span>
+        </div>
         <div>
           <Button>Action</Button>
           <Divider type="vertical" />
           <Button>Drama</Button>
         </div>
         <Text>{sliceText(overview) || 'No more information about this movie, sorry'}</Text>
-        <Rate count={10} className={starColor} onChange={setValue} value={value} />
+        <span onClick={() => addMovieToRatedList({ ...props, stars })}>
+          <Rate
+            count={10}
+            className={starColor}
+            value={stars}
+            onChange={(value) => setStars(value)}
+
+            // disabled = {disableStars}
+          />
+        </span>
       </Col>
     </Row>
   );
