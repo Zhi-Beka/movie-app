@@ -1,29 +1,31 @@
-import { createContext, useEffect, useReducer } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
-import GenresReducer from './GenresReducer';
-
-const initialState = {
-  ratedMovies: [],
-};
-
-export const GenresContext = createContext(initialState);
+export const GenresContext = createContext();
 
 export const GenresProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(GenresReducer, initialState);
+  const [genres, setGenres] = useState([]);
+
+  const getGenres = async () => {
+    const url = 'https://api.themoviedb.org/3/genre/movie/list?api_key=ec32ee203bb1918ee735c44c14ca245e';
+    try {
+      const data = await fetch(url);
+      if (!data.ok) {
+        throw new Error('NO RESPONSE!');
+      }
+      const res = await data.json();
+      setGenres(res.genres);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    localStorage.setItem('ratedMovies', JSON.stringify(state.ratedMovies));
-  }, [state]);
-
-  const addMovieToRatedList = (movie) => {
-    console.log(movie);
-    dispatch({ type: 'ADD_MOVIE_TO_RATED', payload: movie });
-  };
-  console.log(state);
+    getGenres();
+  }, []);
 
   const data = {
-    ratedList: state.ratedMovies,
-    addMovieToRatedList,
+    genres,
+    setGenres,
   };
   return <GenresContext.Provider value={data}>{children}</GenresContext.Provider>;
 };

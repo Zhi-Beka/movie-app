@@ -15,7 +15,7 @@ import RatedList from '../RatedList/Rated';
 
 export default class App extends React.Component {
   apiData = new ApiService();
-  sessionId = null;
+
   constructor() {
     super();
     this.state = {
@@ -67,25 +67,10 @@ export default class App extends React.Component {
       .catch((err) => this.catchError(err));
   };
 
-  getSessionID = async () => {
-    await this.apiData
-      .createGuestSession()
-      .then((data) => (this.sessionId = data.guest_session_id))
-      .catch((err) => err.message);
-    //pass into questSession
-  };
-
-  getRatedMovie = async () => {
-    await this.apiData
-      .getAllData(`/guest_session/${this.sessionId}/rated/movies&page=${this.state.value}`)
-      .then((data) => console.log(data))
-      .catch((err) => err.message);
-  };
-
   componentDidMount() {
     const { value, page } = this.state;
     this.getData(value, page);
-    this.getSessionID();
+    // this.apiData.createSessionID();
   }
 
   componentDidUpdate(prevProps, prevState) {

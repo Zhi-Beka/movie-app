@@ -10,7 +10,7 @@
   flex-direction: column;
   gap: 5px;
   margin-left: 10px;
-
+  padding: 5px;
 }
 
 .rate {
@@ -42,12 +42,12 @@
   height: 28px;
   border: 2px solid;
   border-radius: 50%;
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.rating > span{
+.rating > span {
   color: black;
   font-weight: 600;
 }
