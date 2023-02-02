@@ -9,7 +9,7 @@ export default class Search extends React.Component {
 
     return (
       <div className="search-box">
-        <Input size="large" placeholder="Type to search..." maxLength={20} onChange={getValue} />
+        <Input size="large" placeholder="Type to search..." maxLength={20} onChange={getValue} autoFocus />
       </div>
     );
   }

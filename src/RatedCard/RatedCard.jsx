@@ -1,15 +1,13 @@
 import { Button, Col, Divider, Image, Rate, Row, Typography } from 'antd';
 import propTypes from 'prop-types';
-
+import classNames from 'classnames';
 /* eslint-disable */
 import imageShow from '../images/not-found.jpg';
 import './RatedCard.css';
-import classNames from 'classnames';
-//import {useState} from "react";
+import Spinner from '../Spinner/Spinner';
 
 const RatedCard = (props) => {
   const { title, overview, img, date, vote, id, rating } = props;
-  // const [stars,setStars] = useState(rating)
   const { Title, Text } = Typography;
 
   const sliceText = (text) => {
@@ -37,7 +35,7 @@ const RatedCard = (props) => {
   return (
     <Row className="card" align>
       <Col lg={10} className="col-img">
-        <Image src={img} height={280} fallback={imageShow} />
+        <Image src={img} height={280} placeholder={<Spinner />} />
       </Col>
       <Col span={12} className="col-text">
         <Title level={5}>{title}</Title>
@@ -51,13 +49,7 @@ const RatedCard = (props) => {
           <Button>Drama</Button>
         </div>
         <Text>{sliceText(overview) || 'No more information about this movie, sorry'}</Text>
-        <Rate
-          count={10}
-          value={rating}
-          className={starsColor}
-          // style={{color:"red"}}
-          // disabled
-        />
+        <Rate count={10} value={rating} className={starsColor} />
       </Col>
     </Row>
   );

@@ -1,4 +1,5 @@
 import imageShow from '../images/not-found.jpg';
+import ErrorIndicator from '../errorIndicator';
 
 export default class ApiService {
   _apiBase = 'https://api.themoviedb.org/3';
@@ -17,16 +18,15 @@ export default class ApiService {
       }
       return await res.json();
     } catch (err) {
-      console.log(err);
+      return <ErrorIndicator noResults={true} />;
     }
   }
 
   async getMovieBySearch(title, page) {
-    if (!title) {
-      title = 'return';
-      return await this.getData(`/search/movie?api_key=${this.API_KEY}&query=${title}&page=${page}`);
+    if (title) {
+      let urlQuery = `/search/movie?api_key=${this.API_KEY}&query=${title}&page=${page}`;
+      return await this.getData(urlQuery);
     }
-    return await this.getData(`/search/movie?api_key=${this.API_KEY}&query=${title}&page=${page}`);
   }
 
   async createSessionID() {
@@ -80,10 +80,10 @@ export default class ApiService {
   }
 
   //const x = 'https://api.themoviedb.org/3/guest_session/c3155a46169aae254313e2c990d95d1b/rated/movies?api_key=ec32ee203bb1918ee735c44c14ca245e'
-  async getRatedMovies() {
+  async getRatedMovies(page) {
     const sessionId = localStorage.getItem('guest_session_id');
 
-    const url = `${this._apiBase}/guest_session/${sessionId}/rated/movies?api_key=${this.API_KEY}`;
+    const url = `${this._apiBase}/guest_session/${sessionId}/rated/movies?api_key=${this.API_KEY}&page=${page}`;
     try {
       const data = await fetch(url);
       if (!data.ok) {

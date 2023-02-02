@@ -4,6 +4,7 @@
   /*grid-template-columns: 455px 455px;*/
   grid-template-columns: 1fr 1fr;
   gap: 24px;
+
 }
 
 @media screen and (max-width: 420px) {

@@ -1,5 +1,4 @@
 body {
-  background: #e5e5e5;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -10,16 +9,6 @@ body {
   height: 100%;
   margin: 0 auto;
   padding: 30px;
-  background: white;
-}
-
-.spin {
-  margin: 20px auto;
-  padding: 30px 50px;
-  text-align: center;
-  background: white;
-  border-radius: 4px;
-  width: 100%;
 }
 
 @media screen and (max-width: 420px) {

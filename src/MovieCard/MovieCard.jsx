@@ -1,16 +1,13 @@
 import { Col, Image, Rate, Row, Space, Tag, Typography } from 'antd';
-import { Spin } from 'antd/lib';
-import { LoadingOutlined } from '@ant-design/icons';
 import propTypes from 'prop-types';
 import classNames from 'classnames';
 import { useState, useContext } from 'react';
-
 /* eslint-disable */
 import './MovieCard.css';
 import imageShow from '../images/not-found.jpg';
 import ApiService from '../services/movieApi';
-
 import { GenresContext } from '../contextAPI/GenresContext';
+import Spinner from '../Spinner/Spinner';
 
 const MovieCard = (props) => {
   const [stars, setStars] = useState(0);
@@ -21,20 +18,8 @@ const MovieCard = (props) => {
 
   const postRates = async (id, value) => {
     setStars(value);
-    return await api
-      .postRatedMovies(id, value)
-      .then((data) => console.log(data, 'RESPONSE FROM SERVER'))
-      .catch((err) => console.log(err.message));
+    return await api.postRatedMovies(id, value).catch((err) => console.log(err.message));
   };
-
-  const antIcon = (
-    <LoadingOutlined
-      style={{
-        fontSize: 48,
-      }}
-      spin
-    />
-  );
 
   const sliceText = (text) => {
     const len = 80;
@@ -65,18 +50,13 @@ const MovieCard = (props) => {
         return item.name;
       }
     });
-    return <Tag key={el}>{tagName.name}</Tag>;
+    return <Tag key={el}>{tagName?.name}</Tag>;
   });
 
   return (
     <Row className="card" align>
       <Col lg={10} className="col-img">
-        <Image
-          src={img}
-          height={280}
-          fallback={imageShow}
-          placeholder={<Spin indicator={antIcon} className="spin" />}
-        />
+        <Image src={img} height={280} fallback={imageShow} placeholder={<Spinner />} />
       </Col>
       <Col span={12} className="col-text">
         <Title level={5}>{title}</Title>
@@ -88,7 +68,7 @@ const MovieCard = (props) => {
           {tagNames}
         </Space>
 
-        <Text>{sliceText(overview) || 'No more information about this movie, sorry'}</Text>
+        <Text className="text">{overview}</Text>
 
         <Rate
           count={10}

@@ -1,4 +1,4 @@
-.rating{
+.rating {
   position: absolute;
   top: 3px;
   right: -25px;
@@ -17,13 +17,11 @@
   font-weight: 600;
 }
 
-
-.rate{
+.rate {
   font-size: 15px;
-
 }
 
-.bad{
+.bad {
   color: #e90000;
 }
 
