@@ -21,7 +21,7 @@ export default class App extends React.Component {
     super();
     this.state = {
       movie: [],
-      value: '',
+      value: 'return',
       page: 1,
       totalPages: 1,
       totalResults: 10,
@@ -47,7 +47,7 @@ export default class App extends React.Component {
 
   catchError = (err) => {
     this.setState({ error: true, loading: false });
-    console.log(err);
+    console.log(err.message);
   };
 
   onChangePage = (page) => {
@@ -62,7 +62,7 @@ export default class App extends React.Component {
         return this.setState({
           movie: data.results,
           totalPages: data.total_pages,
-          totalResults: data.total_results,
+          totalResults: data.total_results ? data.total_results : 'no movies',
           loading: false,
           error: false,
         });
@@ -75,7 +75,7 @@ export default class App extends React.Component {
     if (value !== prevState.value || page !== prevState.page) {
       if (value) {
         this.setState({ loading: true });
-        this.getData(value, page);
+        this.getData(value, page).catch((err) => this.catchError(err));
       }
     }
   }
@@ -87,32 +87,32 @@ export default class App extends React.Component {
   render() {
     const { loading, movie, page, error, tabs, showRatedList, totalResults } = this.state;
     const spinner = loading ? <Spinner /> : null;
-    const paginationShow = movie.length > 0 && !showRatedList;
-    const showContent = paginationShow ? <MovieList movies={movie} /> : null;
-    const errorMessage = !totalResults ? <ErrorIndicator noResults={true} /> : null;
+    const show = !(movie.length && showRatedList);
+    const showContent = show ? <MovieList movies={movie} loading={loading} res={totalResults} /> : null;
+
     return (
       <div className="app">
         {!error ? (
           <GenresProvider>
             <TabsHeader tabs={tabs} setTabs={this.setTabsName} />
             {!showRatedList ? <Search getValue={this.debouncedHandleChange} /> : null}
-            {errorMessage}
+
             {spinner}
             {showContent}
-            {paginationShow && (
+            {movie.length > 0 && !showRatedList ? (
               <Pagination
                 style={{ marginTop: '20px', textAlign: 'center' }}
                 current={page}
                 onChange={this.onChangePage}
                 total={this.state.totalResults}
-                defaultPageSize={1}
+                pageSize={20}
                 showSizeChanger={false}
               />
-            )}
+            ) : null}
             {showRatedList ? <RatedList /> : null}
           </GenresProvider>
         ) : (
-          <ErrorIndicator message="No Internet connection!" />
+          <ErrorIndicator message="No Internet connection or VPN doesn't work!" />
         )}
       </div>
     );

@@ -1,5 +1,4 @@
 import imageShow from '../images/not-found.jpg';
-import ErrorIndicator from '../errorIndicator';
 
 export default class ApiService {
   _apiBase = 'https://api.themoviedb.org/3';
@@ -18,14 +17,18 @@ export default class ApiService {
       }
       return await res.json();
     } catch (err) {
-      return <ErrorIndicator noResults={true} />;
+      console.log(err.message);
     }
   }
 
   async getMovieBySearch(title, page) {
-    if (title) {
-      let urlQuery = `/search/movie?api_key=${this.API_KEY}&query=${title}&page=${page}`;
-      return await this.getData(urlQuery);
+    try {
+      if (title) {
+        let urlQuery = `/search/movie?api_key=${this.API_KEY}&query=${title}&page=${page}`;
+        return await this.getData(urlQuery);
+      }
+    } catch (err) {
+      console.log(err.message);
     }
   }
 

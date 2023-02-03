@@ -13,6 +13,10 @@ const Spinner = () => {
     />
   );
 
-  return <Spin indicator={antIcon} className="spin" />;
+  return (
+    <div className="spin">
+      <Spin indicator={antIcon} />
+    </div>
+  );
 };
 export default Spinner;

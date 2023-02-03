@@ -1,18 +1,19 @@
 .container {
   display: grid;
   justify-content: center;
-  /*grid-template-columns: 455px 455px;*/
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 456px 456px;
+
   gap: 24px;
 
 }
 
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 425px) {
   .container {
     grid-template-columns: 1fr;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    text-align: center;
+
+
   }
 }

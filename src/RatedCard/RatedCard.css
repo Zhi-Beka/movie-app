@@ -1,38 +1,38 @@
-.rating {
-  position: absolute;
-  top: 3px;
-  right: -25px;
-  text-align: center;
-  width: 28px;
-  height: 28px;
-  border: 2px solid;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+/*.rating {*/
+/*  position: absolute;*/
+/*  top: 3px;*/
+/*  right: -25px;*/
+/*  text-align: center;*/
+/*  width: 28px;*/
+/*  height: 28px;*/
+/*  border: 2px solid;*/
+/*  border-radius: 50%;*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
+/*}*/
 
-.rating > span {
-  color: black;
-  font-weight: 600;
-}
+/*.rating > span {*/
+/*  color: black;*/
+/*  font-weight: 600;*/
+/*}*/
 
-.rate {
-  font-size: 15px;
-}
+/*.rate {*/
+/*  font-size: 15px;*/
+/*}*/
 
-.bad {
-  color: #e90000;
-}
+/*.bad {*/
+/*  color: #e90000;*/
+/*}*/
 
-.normal {
-  color: #e97e00;
-}
+/*.normal {*/
+/*  color: #e97e00;*/
+/*}*/
 
-.good {
-  color: #e9d100;
-}
+/*.good {*/
+/*  color: #e9d100;*/
+/*}*/
 
-.wonderful {
-  color: #66e900;
-}
+/*.wonderful {*/
+/*  color: #66e900;*/
+/*}*/

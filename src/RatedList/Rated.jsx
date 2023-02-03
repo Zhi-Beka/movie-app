@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Pagination } from 'antd';
 
-import RatedCard from '../RatedCard/RatedCard';
+//import RatedCard from '../RatedCard/RatedCard';
 import ApiService from '../services/movieApi';
-import ErrorIndicator from '../errorIndicator';
+//import ErrorIndicator from '../errorIndicator';
 import Spinner from '../Spinner/Spinner';
+//import MovieCard from "../MovieCard/MovieCard";
+import RatedCard from '../RatedCard/RatedCard';
 
 const RatedList = () => {
   //const { ratedList } = useContext(GenresContext);
@@ -12,27 +14,30 @@ const RatedList = () => {
     results: [],
     totalResults: 1,
     totalPages: 1,
-    loading: true,
+    // loading: true,
   });
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const api = new ApiService();
 
   const getRatedMovie = async (page) => {
     return await api
       .getRatedMovies(page)
-      .then((data) =>
+      .then((data) => {
         setRatedMovies({
           results: data.results,
           totalResults: data.total_results, //22
           totalPages: data.total_pages, //2
-          loading: false,
-        })
-      )
+          // loading: false,
+        });
+      })
       .catch((err) => err);
   };
   useEffect(() => {
     getRatedMovie(page);
-    // setRatedMovies({...ratedMovies, loading:false})
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   }, [ratedMovies.results]);
 
   const onChangePage = (current) => {
@@ -40,37 +45,43 @@ const RatedList = () => {
     window.scroll(0, 0);
   };
 
-  const showResults = ratedMovies.results.length > 0 && !ratedMovies.loading;
-  const spinner = ratedMovies.loading ? <Spinner /> : null;
+  const showResults = ratedMovies.results.length > 0;
+  //   && !ratedMovies.loading;
+  const spinner = loading ? <Spinner /> : null;
+  //const noResults = !ratedMovies.results.length?   <ErrorIndicator noResults />: null;
 
   return (
     <>
+      {spinner}
       <div className="container">
-        {spinner}
-        {showResults ? (
-          ratedMovies.results.map((el) => {
-            const { title, overview, release_date, vote_average, id, poster_path } = el;
-            return (
-              <RatedCard
-                title={title}
-                overview={overview}
-                img={api.getImage(poster_path)}
-                date={release_date}
-                vote={vote_average.toFixed(1)}
-                key={id}
-              />
-            );
-          })
-        ) : (
-          <ErrorIndicator noResults />
-        )}
+        {showResults
+          ? ratedMovies.results.map((el) => {
+              const { title, overview, release_date, vote_average, id, poster_path, genre_ids, rating } = el;
+              return (
+                <RatedCard
+                  title={title}
+                  overview={overview}
+                  imgCard={api.getImage(poster_path)}
+                  date={release_date}
+                  vote={vote_average.toFixed(1)}
+                  key={id}
+                  genre_ids={genre_ids}
+                  starResult={rating}
+                  loading={loading}
+                />
+              );
+            })
+          : null}
       </div>
-      <Pagination
-        style={{ marginTop: '20px', textAlign: 'center' }}
-        current={page}
-        onChange={onChangePage}
-        total={ratedMovies.totalResults}
-      />
+      {!loading && ratedMovies.totalPages ? (
+        <Pagination
+          style={{ marginTop: '20px', textAlign: 'center' }}
+          current={page}
+          pageSize={20}
+          onChange={onChangePage}
+          total={ratedMovies.totalResults}
+        />
+      ) : null}
     </>
   );
 };
