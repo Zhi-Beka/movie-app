@@ -70,6 +70,10 @@ export default class App extends React.Component {
       .catch((err) => this.catchError(err));
   };
 
+  componentDidMount() {
+    this.apiData.createSessionID().catch((err) => console.log(err.message));
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const { value, page } = this.state;
     if (value !== prevState.value || page !== prevState.page) {
@@ -80,8 +84,9 @@ export default class App extends React.Component {
     }
   }
 
-  componentDidCatch() {
+  componentDidCatch(err) {
     this.setState({ error: true });
+    console.log(err);
   }
 
   render() {

@@ -1,7 +1,5 @@
 import { Space, Alert } from 'antd';
 
-import './ErrorIndicator.css';
-
 export const ErrorIndicator = ({ message }) => {
   const text = message ? message : 'something went wrong';
   return (
