@@ -59,8 +59,8 @@ export default class App extends React.Component {
     window.scroll(0, 0);
   };
 
-  getData = async (query, page = 1) => {
-    await this.apiData
+  getData = (query, page = 1) => {
+    return this.apiData
       .getMovieBySearch(query, page)
       .then((data) => {
         return this.setState({
@@ -93,8 +93,8 @@ export default class App extends React.Component {
     }
   }
 
-  setSessionId = async () => {
-    return await this.apiData.createSessionID().then((data) => this.setState({ sessionID: data }));
+  setSessionId = () => {
+    return this.apiData.createSessionID().then((data) => this.setState({ sessionID: data }));
   };
 
   componentDidMount() {
