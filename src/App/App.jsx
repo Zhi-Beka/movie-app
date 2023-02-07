@@ -8,12 +8,11 @@ import './App.css';
 import ApiService from '../services/movieApi';
 
 import ErrorIndicator from '../errorIndicator';
-
 import TabsHeader from '../TabsHeader/TabsHeader';
 import Search from '../Search';
 import RatedList from '../RatedList/Rated';
 import Spinner from '../Spinner/Spinner';
-import { GenresProvider } from '../contextAPI';
+import { GenresContext } from '../contextAPI/GenresContext';
 
 export default class App extends React.Component {
   apiData = new ApiService();
@@ -127,7 +126,7 @@ export default class App extends React.Component {
     return (
       <div className="app">
         {!error ? (
-          <GenresProvider value={genres}>
+          <GenresContext.Provider value={genres}>
             <TabsHeader tabs={tabs} setTabs={this.setTabsName} />
             {!showRatedList ? <Search getValue={this.debouncedHandleChange} /> : null}
 
@@ -144,7 +143,7 @@ export default class App extends React.Component {
               />
             ) : null}
             {showRatedList ? <RatedList sessionID={sessionID} /> : null}
-          </GenresProvider>
+          </GenresContext.Provider>
         ) : (
           <ErrorIndicator message="No Internet connection or VPN doesn't work!" />
         )}

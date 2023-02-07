@@ -2,18 +2,19 @@
 import { Rate, Tag, Typography } from 'antd';
 import propTypes from 'prop-types';
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 import './MovieCard.css';
 import imageShow from '../images/not-found.jpg';
 import ApiService from '../services/movieApi';
-import { GenresConsumer } from '../contextAPI';
+//import { GenresConsumer } from '../contextAPI';
 import Spinner from '../Spinner/Spinner';
+import { GenresContext } from '../contextAPI/GenresContext';
 
 const MovieCard = (props) => {
   const [stars, setStars] = useState(0);
   const [imgLoad, setImgLoad] = useState(false);
-
+  const { genres } = useContext(GenresContext);
   const { title, overview, img, date, vote, id, genre_ids, sessionID, starRating } = props;
   const { Title, Text } = Typography;
   const api = new ApiService();
@@ -49,48 +50,42 @@ const MovieCard = (props) => {
   const showImg = imgLoad ? <img src={img} alt="poster" loading={'lazy'} /> : <Spinner />;
 
   return (
-    <GenresConsumer>
-      {({ genres }) => {
-        return (
-          <div className="card">
-            <div className="img-box">{showImg}</div>
-            <div className="info-box">
-              <div className="info-top">
-                <Title level={5} className="title">
-                  {title}
-                </Title>
+    <div className="card">
+      <div className="img-box">{showImg}</div>
+      <div className="info-box">
+        <div className="info-top">
+          <Title level={5} className="title">
+            {title}
+          </Title>
 
-                <div className={ratingColor}>
-                  <span> {vote}</span>
-                </div>
-
-                <Text level={7}>{date || '20-20-2020'}</Text>
-
-                <span className="tags">
-                  {genre_ids?.map((el) => {
-                    let tagName = genres.find((item) => {
-                      if (item.id === el) {
-                        return item;
-                      }
-                    });
-                    return <Tag key={el}>{tagName.name}</Tag>;
-                  })}
-                </span>
-              </div>
-              <Text className="text">{overview}</Text>
-
-              <Rate
-                count={10}
-                className={starColor}
-                value={starRating || stars}
-                onChange={(value) => postRates(id, value)}
-                allowHalf
-              />
-            </div>
+          <div className={ratingColor}>
+            <span> {vote}</span>
           </div>
-        );
-      }}
-    </GenresConsumer>
+
+          <Text level={7}>{date || '20-20-2020'}</Text>
+
+          <span className="tags">
+            {genre_ids?.map((el) => {
+              let tagName = genres.find((item) => {
+                if (item.id === el) {
+                  return item;
+                }
+              });
+              return <Tag key={el}>{tagName.name}</Tag>;
+            })}
+          </span>
+        </div>
+        <Text className="text">{overview}</Text>
+
+        <Rate
+          count={10}
+          className={starColor}
+          value={starRating || stars}
+          onChange={(value) => postRates(id, value)}
+          allowHalf
+        />
+      </div>
+    </div>
   );
 };
 MovieCard.defaultProps = {
