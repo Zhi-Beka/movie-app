@@ -1,34 +1,27 @@
+/* eslint-disable */
 import { Rate, Tag, Typography } from 'antd';
 import propTypes from 'prop-types';
 import classNames from 'classnames';
-import { useState, useContext } from 'react';
-/* eslint-disable */
+import { useState } from 'react';
+
 import './MovieCard.css';
 import imageShow from '../images/not-found.jpg';
 import ApiService from '../services/movieApi';
-import { GenresContext } from '../contextAPI/GenresContext';
+import { GenresConsumer } from '../contextAPI';
 import Spinner from '../Spinner/Spinner';
 
 const MovieCard = (props) => {
   const [stars, setStars] = useState(0);
   const [imgLoad, setImgLoad] = useState(false);
 
-  const { title, overview, img, date, vote, id, genre_ids } = props;
+  const { title, overview, img, date, vote, id, genre_ids, sessionID, starRating } = props;
   const { Title, Text } = Typography;
   const api = new ApiService();
-  const { genres } = useContext(GenresContext);
 
   const postRates = async (id, value) => {
     setStars(value);
-    return await api.postRatedMovies(id, value).catch((err) => console.log(err.message));
+    return await api.postRatedMovies(id, value, sessionID);
   };
-
-  //const sliceText = (text) => {
-  //   const len = 80;
-  //   if (text.length > len) {
-  //     return text.slice(0, len) + ' ...';
-  //   }
-  // };
 
   const starColor = classNames({
     rate: true,
@@ -46,15 +39,6 @@ const MovieCard = (props) => {
     wonderful: vote >= 7,
   });
 
-  const tagNames = genre_ids?.map((el) => {
-    let tagName = genres?.find((item) => {
-      if (item.id === el) {
-        return item.name;
-      }
-    });
-    return <Tag key={el}>{tagName?.name}</Tag>;
-  });
-
   if (!imgLoad) {
     let image = new Image();
     image.src = img;
@@ -65,27 +49,48 @@ const MovieCard = (props) => {
   const showImg = imgLoad ? <img src={img} alt="poster" loading={'lazy'} /> : <Spinner />;
 
   return (
-    <div className="card">
-      <div className="img-box">{showImg}</div>
-      <div className="info-box">
-        <div className="info-top">
-          <Title level={5} className="title">
-            {title}
-          </Title>
+    <GenresConsumer>
+      {({ genres }) => {
+        return (
+          <div className="card">
+            <div className="img-box">{showImg}</div>
+            <div className="info-box">
+              <div className="info-top">
+                <Title level={5} className="title">
+                  {title}
+                </Title>
 
-          <div className={ratingColor}>
-            <span> {vote}</span>
+                <div className={ratingColor}>
+                  <span> {vote}</span>
+                </div>
+
+                <Text level={7}>{date || '20-20-2020'}</Text>
+
+                <span className="tags">
+                  {genre_ids?.map((el) => {
+                    let tagName = genres.find((item) => {
+                      if (item.id === el) {
+                        return item;
+                      }
+                    });
+                    return <Tag key={el}>{tagName.name}</Tag>;
+                  })}
+                </span>
+              </div>
+              <Text className="text">{overview}</Text>
+
+              <Rate
+                count={10}
+                className={starColor}
+                value={starRating || stars}
+                onChange={(value) => postRates(id, value)}
+                allowHalf
+              />
+            </div>
           </div>
-
-          <Text level={7}>{date || '20-20-2020'}</Text>
-
-          <span className="tags">{tagNames}</span>
-        </div>
-        <Text className="text">{overview}</Text>
-
-        <Rate count={10} className={starColor} value={stars} onChange={(value) => postRates(id, value)} allowHalf />
-      </div>
-    </div>
+        );
+      }}
+    </GenresConsumer>
   );
 };
 MovieCard.defaultProps = {

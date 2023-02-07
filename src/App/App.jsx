@@ -8,20 +8,22 @@ import './App.css';
 import ApiService from '../services/movieApi';
 
 import ErrorIndicator from '../errorIndicator';
-import { GenresProvider } from '../contextAPI/GenresContext';
+
 import TabsHeader from '../TabsHeader/TabsHeader';
 import Search from '../Search';
 import RatedList from '../RatedList/Rated';
 import Spinner from '../Spinner/Spinner';
+import { GenresProvider } from '../contextAPI';
 
 export default class App extends React.Component {
   apiData = new ApiService();
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       movie: [],
-      value: 'return',
+      ratedMovie: [],
+      value: null,
       page: 1,
       totalPages: 1,
       totalResults: 10,
@@ -29,6 +31,8 @@ export default class App extends React.Component {
       error: false,
       tabs: ['Search', 'Rated'],
       showRatedList: false,
+      sessionID: '',
+      genres: [],
     };
   }
 
@@ -47,7 +51,7 @@ export default class App extends React.Component {
 
   catchError = (err) => {
     this.setState({ error: true, loading: false });
-    console.log(err.message);
+    return <ErrorIndicator message={err.message} />;
   };
 
   onChangePage = (page) => {
@@ -70,35 +74,60 @@ export default class App extends React.Component {
       .catch((err) => this.catchError(err));
   };
 
-  componentDidMount() {
-    this.apiData.createSessionID().catch((err) => console.log(err.message));
-  }
-
   componentDidUpdate(prevProps, prevState) {
     const { value, page } = this.state;
     if (value !== prevState.value || page !== prevState.page) {
       if (value) {
         this.setState({ loading: true });
-        this.getData(value, page).catch((err) => this.catchError(err));
+        this.getData(value, page);
       }
+    }
+    if (this.state.ratedMovie.length !== prevState.movie.length) {
+      this.apiData.getRatedMovies(page, this.state.sessionID).then((data) =>
+        this.setState(() => {
+          return {
+            ratedMovie: data.results,
+          };
+        })
+      );
     }
   }
 
-  componentDidCatch(err) {
+  setSessionId = async () => {
+    return await this.apiData.createSessionID().then((data) => this.setState({ sessionID: data }));
+  };
+
+  componentDidMount() {
+    this.setSessionId();
+    this.apiData
+      .getGenres()
+      .then((data) => this.setState({ genres: data }))
+      .catch((err) => err.message);
+  }
+
+  componentDidCatch() {
     this.setState({ error: true });
-    console.log(err);
   }
 
   render() {
-    const { loading, movie, page, error, tabs, showRatedList, totalResults } = this.state;
+    const { loading, movie, page, error, tabs, showRatedList, totalResults, sessionID, genres } = this.state;
+
     const spinner = loading ? <Spinner /> : null;
     const show = !(movie.length && showRatedList);
-    const showContent = show ? <MovieList movies={movie} loading={loading} res={totalResults} /> : null;
+    const showContent = show ? (
+      <MovieList
+        movies={movie}
+        loading={loading}
+        res={totalResults}
+        sessionID={sessionID}
+        ratedMovie={this.state.ratedMovie}
+      />
+    ) : null;
 
     return (
       <div className="app">
         {!error ? (
-          <GenresProvider>
+          <GenresProvider value={genres}>
             <TabsHeader tabs={tabs} setTabs={this.setTabsName} />
             {!showRatedList ? <Search getValue={this.debouncedHandleChange} /> : null}
 
@@ -114,7 +143,7 @@ export default class App extends React.Component {
                 showSizeChanger={false}
               />
             ) : null}
-            {showRatedList ? <RatedList /> : null}
+            {showRatedList ? <RatedList sessionID={sessionID} /> : null}
           </GenresProvider>
         ) : (
           <ErrorIndicator message="No Internet connection or VPN doesn't work!" />

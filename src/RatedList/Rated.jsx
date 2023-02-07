@@ -1,59 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pagination } from 'antd';
 
-//import RatedCard from '../RatedCard/RatedCard';
-import ApiService from '../services/movieApi';
-//import ErrorIndicator from '../errorIndicator';
 import Spinner from '../Spinner/Spinner';
-//import MovieCard from "../MovieCard/MovieCard";
 import RatedCard from '../RatedCard/RatedCard';
+import ApiService from '../services/movieApi';
 
-const RatedList = () => {
-  //const { ratedList } = useContext(GenresContext);
+const RatedList = ({ sessionID }) => {
   const [ratedMovies, setRatedMovies] = useState({
     results: [],
     totalResults: 1,
     totalPages: 1,
-    // loading: true,
   });
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const api = new ApiService();
 
-  const getRatedMovie = async (page) => {
-    return await api
-      .getRatedMovies(page)
+  const getRatedMovie = (page, sessionID) => {
+    return api
+      .getRatedMovies(page, sessionID)
       .then((data) => {
         setRatedMovies({
           results: data.results,
           totalResults: data.total_results, //22
           totalPages: data.total_pages, //2
-          // loading: false,
         });
       })
       .catch((err) => err);
   };
+
   useEffect(() => {
-    getRatedMovie(page);
+    getRatedMovie(page, sessionID);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  }, [ratedMovies.results]);
+  }, [ratedMovies.results, page]);
 
   const onChangePage = (current) => {
     setPage(current);
     window.scroll(0, 0);
   };
-
   const showResults = ratedMovies.results.length > 0;
-  //   && !ratedMovies.loading;
   const spinner = loading ? <Spinner /> : null;
-  //const noResults = !ratedMovies.results.length?   <ErrorIndicator noResults />: null;
 
   return (
     <>
-      {spinner}
       <div className="container">
+        {spinner}
         {showResults
           ? ratedMovies.results.map((el) => {
               const { title, overview, release_date, vote_average, id, poster_path, genre_ids, rating } = el;
@@ -61,7 +53,7 @@ const RatedList = () => {
                 <RatedCard
                   title={title}
                   overview={overview}
-                  imgCard={api.getImage(poster_path)}
+                  imgCard={poster_path}
                   date={release_date}
                   vote={vote_average.toFixed(1)}
                   key={id}

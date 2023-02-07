@@ -3,40 +3,37 @@ import propTypes from 'prop-types';
 
 import MovieCard from '../MovieCard/MovieCard';
 import './MovieList.css';
-import ApiService from '../services/movieApi';
 import ErrorIndicator from '../errorIndicator';
 
 export class MovieList extends React.Component {
-  static propTypes = {
-    movies: propTypes.arrayOf(propTypes.object),
-  };
-
-  static defaultProps = {
-    movies: [],
-  };
-
-  apiData = new ApiService();
-
   render() {
-    const { movies, loading, res } = this.props;
+    const { movies, loading, res, sessionID, ratedMovie } = this.props;
     const show = movies.length && !loading;
     const errorMessage = !loading && res === 'no movies' ? <ErrorIndicator message="No more films, sorry" /> : null;
+
     return (
       <div className="container">
         {show
           ? movies.map((el) => {
-              const { title, overview, poster_path, release_date, id, vote_average, genre_ids } = el;
+              const { title, overview, poster_path, release_date, id, vote_average, genre_ids, rating } = el;
+              let starValue;
+              if (!rating) {
+                let checkRating = ratedMovie.find((el) => el.id === id);
+                checkRating ? (starValue = checkRating.rating) : null;
+              }
 
               return (
                 <MovieCard
                   title={title}
                   overview={overview}
-                  img={this.apiData.getImage(poster_path)}
+                  img={poster_path}
                   date={release_date}
                   key={id}
                   vote={vote_average}
                   id={id}
                   genre_ids={genre_ids}
+                  starRating={starValue}
+                  sessionID={sessionID}
                 />
               );
             })
@@ -44,4 +41,12 @@ export class MovieList extends React.Component {
       </div>
     );
   }
+
+  static propTypes = {
+    movies: propTypes.arrayOf(propTypes.object),
+  };
+
+  static defaultProps = {
+    movies: [],
+  };
 }
