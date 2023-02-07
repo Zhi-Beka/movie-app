@@ -7,7 +7,6 @@ import { useState, useContext } from 'react';
 import './MovieCard.css';
 import imageShow from '../images/not-found.jpg';
 import ApiService from '../services/movieApi';
-//import { GenresConsumer } from '../contextAPI';
 import Spinner from '../Spinner/Spinner';
 import { GenresContext } from '../contextAPI/GenresContext';
 

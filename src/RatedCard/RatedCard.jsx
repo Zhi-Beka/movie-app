@@ -15,6 +15,7 @@ const RatedCard = (props) => {
   const { Title, Text } = Typography;
   const [imgLoad, setImgLoad] = useState(false);
   const { genres } = useContext(GenresContext);
+
   const starsColor = classNames({
     rate: true,
     bad: starResult <= 3,
