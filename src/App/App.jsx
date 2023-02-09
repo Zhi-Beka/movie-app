@@ -6,7 +6,6 @@ import 'antd/dist/reset.css';
 import MovieList from '../MovieList';
 import './App.css';
 import ApiService from '../services/movieApi';
-
 import ErrorIndicator from '../errorIndicator';
 import TabsHeader from '../TabsHeader/TabsHeader';
 import Search from '../Search';
@@ -30,7 +29,6 @@ export default class App extends React.Component {
       error: false,
       tabs: ['Search', 'Rated'],
       showRatedList: false,
-      //sessionID: '',
       genres: [],
     };
   }
@@ -92,12 +90,9 @@ export default class App extends React.Component {
     }
   }
 
-  //setSessionId = () => {
-  //  return this.apiData.createSessionID().then((data) => this.setState({ sessionID: data }));
-  //};
-
   componentDidMount() {
     this.apiData.createSessionID();
+
     this.apiData
       .getGenres()
       .then((data) => this.setState({ genres: data }))

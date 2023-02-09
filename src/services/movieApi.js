@@ -8,7 +8,10 @@ export default class ApiService {
     this._imgBase = 'https://image.tmdb.org/t/p';
     this.size = '/w500/';
     this.sessionID = '';
+
   }
+
+
 
   getImage = (imgPath) => (imgPath ? `${ this._imgBase }${ this.size }${ imgPath }` : `${ imageShow }`);
   async getData(url) {
@@ -39,6 +42,8 @@ export default class ApiService {
     } catch (error) {
       throw new Error(error);
     }
+
+
   }
 
   async getMovieBySearch(title, page) {
@@ -66,6 +71,7 @@ export default class ApiService {
     } catch (err) {
       throw new Error(err);
     }
+
   }
 
   async postRatedMovies(id, stars) {
