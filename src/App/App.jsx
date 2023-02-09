@@ -30,7 +30,7 @@ export default class App extends React.Component {
       error: false,
       tabs: ['Search', 'Rated'],
       showRatedList: false,
-      sessionID: '',
+      //sessionID: '',
       genres: [],
     };
   }
@@ -82,7 +82,7 @@ export default class App extends React.Component {
       }
     }
     if (this.state.ratedMovie.length !== prevState.movie.length) {
-      this.apiData.getRatedMovies(page, this.state.sessionID).then((data) =>
+      this.apiData.getRatedMovies(page).then((data) =>
         this.setState(() => {
           return {
             ratedMovie: data.results,
@@ -92,12 +92,12 @@ export default class App extends React.Component {
     }
   }
 
-  setSessionId = () => {
-    return this.apiData.createSessionID().then((data) => this.setState({ sessionID: data }));
-  };
+  //setSessionId = () => {
+  //  return this.apiData.createSessionID().then((data) => this.setState({ sessionID: data }));
+  //};
 
   componentDidMount() {
-    this.setSessionId();
+    this.apiData.createSessionID();
     this.apiData
       .getGenres()
       .then((data) => this.setState({ genres: data }))
@@ -109,7 +109,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { loading, movie, page, error, tabs, showRatedList, totalResults, sessionID, genres } = this.state;
+    const { loading, movie, page, error, tabs, showRatedList, totalResults, genres } = this.state;
 
     const spinner = loading ? <Spinner /> : null;
     const show = !(movie.length && showRatedList);
@@ -118,8 +118,8 @@ export default class App extends React.Component {
         movies={movie}
         loading={loading}
         res={totalResults}
-        sessionID={sessionID}
         ratedMovie={this.state.ratedMovie}
+        postRatedMovies={(...args) => this.apiData.postRatedMovies(...args)}
       />
     ) : null;
 
@@ -142,7 +142,7 @@ export default class App extends React.Component {
                 showSizeChanger={false}
               />
             ) : null}
-            {showRatedList ? <RatedList sessionID={sessionID} /> : null}
+            {showRatedList ? <RatedList getRatedMovies={(...args) => this.apiData.getRatedMovies(...args)} /> : null}
           </GenresContext.Provider>
         ) : (
           <ErrorIndicator message="No Internet connection or VPN doesn't work!" />

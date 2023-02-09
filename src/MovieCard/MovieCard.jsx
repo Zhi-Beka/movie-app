@@ -14,13 +14,13 @@ const MovieCard = (props) => {
   const [stars, setStars] = useState(0);
   const [imgLoad, setImgLoad] = useState(false);
   const { genres } = useContext(GenresContext);
-  const { title, overview, img, date, vote, id, genre_ids, sessionID, starRating } = props;
+  const { title, overview, img, date, vote, id, genre_ids, starRating, postRatedMovies } = props;
   const { Title, Text } = Typography;
-  const api = new ApiService();
+  // const api = new ApiService();
 
-  const postRates = async (id, value) => {
+  const postRates = (id, value) => {
     setStars(value);
-    return await api.postRatedMovies(id, value, sessionID);
+    return postRatedMovies(id, value);
   };
 
   const starColor = classNames({

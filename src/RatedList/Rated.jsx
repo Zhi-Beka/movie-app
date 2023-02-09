@@ -3,9 +3,8 @@ import { Pagination } from 'antd';
 
 import Spinner from '../Spinner/Spinner';
 import RatedCard from '../RatedCard/RatedCard';
-import ApiService from '../services/movieApi';
 
-const RatedList = ({ sessionID }) => {
+const RatedList = ({ getRatedMovies }) => {
   const [ratedMovies, setRatedMovies] = useState({
     results: [],
     totalResults: 1,
@@ -13,11 +12,9 @@ const RatedList = ({ sessionID }) => {
   });
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const api = new ApiService();
 
-  const getRatedMovie = (page, sessionID) => {
-    return api
-      .getRatedMovies(page, sessionID)
+  const getRateMovie = (page) => {
+    return getRatedMovies(page)
       .then((data) => {
         setRatedMovies({
           results: data.results,
@@ -29,7 +26,7 @@ const RatedList = ({ sessionID }) => {
   };
 
   useEffect(() => {
-    getRatedMovie(page, sessionID);
+    getRateMovie(page);
     setTimeout(() => {
       setLoading(false);
     }, 1000);

@@ -7,7 +7,7 @@ import ErrorIndicator from '../errorIndicator';
 
 export class MovieList extends React.Component {
   render() {
-    const { movies, loading, res, sessionID, ratedMovie } = this.props;
+    const { movies, loading, res, ratedMovie, postRatedMovies } = this.props;
     const show = movies.length && !loading;
     const errorMessage = !loading && res === 'no movies' ? <ErrorIndicator message="No more films, sorry" /> : null;
 
@@ -33,7 +33,7 @@ export class MovieList extends React.Component {
                   id={id}
                   genre_ids={genre_ids}
                   starRating={starValue}
-                  sessionID={sessionID}
+                  postRatedMovies={postRatedMovies}
                 />
               );
             })
